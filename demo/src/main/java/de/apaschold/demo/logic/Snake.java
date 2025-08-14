@@ -1,6 +1,8 @@
 package de.apaschold.demo.logic;
 
+import de.apaschold.demo.model.FoodToken;
 import de.apaschold.demo.model.SnakeToken;
+import de.apaschold.demo.model.Token;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class Snake {
         this.snakeTokens.add(new SnakeToken(xCenter + 20, yCenter));
     }
 
-    //4. getters and setters
+    //3. getters and setters
     public ArrayList<Rectangle> getSnakeShape() {
         ArrayList<Rectangle> shapes = new ArrayList<>();
 
@@ -34,6 +36,10 @@ public class Snake {
         }
 
         return shapes;
+    }
+
+    public ArrayList<SnakeToken> getSnakeTokens() {
+        return snakeTokens;
     }
 
     public void setDirection(Direction newDirection) {
@@ -59,7 +65,7 @@ public class Snake {
         }
 
         //headmovement
-        SnakeToken head = this.snakeTokens.get(0);
+        SnakeToken head = this.snakeTokens.getFirst();
 
         int newXCenter = head.getXCenter();
         int newYCenter = head.getYCenter();
@@ -72,4 +78,33 @@ public class Snake {
         }
     }
 
+    public boolean eat(FoodToken foodToken){
+        boolean hasEaten = false;
+
+        SnakeToken head = this.snakeTokens.getFirst();
+
+        if (head.intersects(foodToken)){
+            this.snakeTokens.add(new SnakeToken(head.getXCenter(), head.getYCenter()));
+            hasEaten = true;
+        }
+
+        return hasEaten;
+    }
+
+    public boolean intersects(Token token) {
+        for (SnakeToken snakeToken : this.snakeTokens) {
+            if (snakeToken.intersects(token)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //public boolean checkCollisionWithWallsOrItself() {
+        //SnakeToken head = this.snakeTokens.getFirst();
+        //int xCenter = head.getXCenter();
+        //int yCenter = head.getYCenter();
+
+
+    //}
 }

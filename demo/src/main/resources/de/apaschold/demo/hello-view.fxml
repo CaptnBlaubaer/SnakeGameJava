@@ -4,25 +4,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER"
-      spacing="20.0"
-      style="-fx-background-color: black"
-      xmlns:fx="http://javafx.com/fxml/1"
-      xmlns="http://javafx.com/javafx/17.0.12"
-      fx:controller="de.apaschold.demo.ui.GameController">
+<VBox alignment="CENTER" spacing="0" style="-fx-background-color: black" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.apaschold.demo.ui.GameController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="20.0" left="20.0" right="20.0" top="0" />
     </padding>
 
-    <Label fx:id="welcomeText" />
+    <Pane maxHeight="200.0" prefHeight="100.0" prefWidth="400">
+      <children>
+         <Label layoutX="30" layoutY="5.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="S" textFill="#ff00f6" />
+         <Label layoutX="65.0" layoutY="20.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="N" textFill="#2f00ff" />
+          <Label layoutX="110.0" layoutY="5.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="A" textFill="#00e5ff" />
+          <Label layoutX="150.0" layoutY="20.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="K" textFill="#01f854" />
+          <Label layoutX="190.0" layoutY="5.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="E" textFill="#88ff00" />
+          <Label layoutX="270.0" layoutY="20.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="G" textFill="#dac504" />
+          <Label layoutX="310.0" layoutY="5.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="A" textFill="#ff7b00" />
+          <Label layoutX="350.0" layoutY="20.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="M" textFill="RED" />
+          <Label layoutX="390.0" layoutY="5.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="E" textFill="#ff0099" />
+      </children>
+    </Pane>
 
-    <Pane fx:id="gameWindow"
-         prefHeight="400.0"
-         prefWidth="400.0"
-         maxWidth="400.0"
-         maxHeight="400.0"
-         style="-fx-border-color: blue"
-        />
+    <Pane fx:id="gameWindow" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" style="-fx-border-color: blue">
+        <children>
+            <Label fx:id="newGameLabel" layoutX="70.0" layoutY="188.0" text="To start new game press N" style="-fx-font-size: 24px" textFill="RED"/>
+        </children>
+    </Pane>
 
-    <Button onAction="#onHelloButtonClick" text="Hello!"/>
+    <HBox>
+    </HBox>
+
+
 </VBox>

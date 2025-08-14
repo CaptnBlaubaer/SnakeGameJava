@@ -27,7 +27,7 @@ public class GuiController {
             gameController.keyboardControl(event.getCode());
         });
 
-        stage.setTitle("Hello!");
+        stage.setTitle("Snake");
         stage.setScene(scene);
         stage.show();
     }

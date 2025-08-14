@@ -38,10 +38,18 @@ public abstract class Token {
             isIntersecting = true;
         }
 
-        if (this.xCenter == 0 || this.yCenter ==0 || this.xCenter == 400 || this.yCenter == 400) {
+        if (this.xCenter == -5 || this.yCenter == -5 || this.xCenter == 405 || this.yCenter == 405) {
             isIntersecting = true; // Token intersects with the border
         }
 
         return isIntersecting;
     };
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "xCenter=" + xCenter +
+                ", yCenter=" + yCenter +
+                '}';
+    }
 }

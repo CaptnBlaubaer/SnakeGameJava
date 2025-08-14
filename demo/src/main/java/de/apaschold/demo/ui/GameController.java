@@ -23,6 +23,7 @@ public class GameController implements Initializable {
     //TODO variable size
     //TODO implement a start screen and a game over screen
     //TODO starting conditions (not close to the wall,...)
+    //TODO snake doesn't cross wall
 
     // 0. constants
     private static boolean paused = true;
@@ -32,7 +33,7 @@ public class GameController implements Initializable {
     private FoodToken foodToken;
 
     @FXML
-    private Label welcomeText;
+    private Label newGameLabel;
 
     @FXML
     private Pane gameWindow;
@@ -40,11 +41,6 @@ public class GameController implements Initializable {
     //2. initializer
     @Override
     public void initialize(URL location,ResourceBundle resources) {
-        this.snake = new Snake();
-        createNewFoodToken();
-
-        gameWindow.getChildren().addAll(this.snake.getSnakeShape());
-        gameWindow.getChildren().add(foodToken.getShape());
 
         Timeline runGame = new Timeline(new KeyFrame(Duration.seconds(0.2), new EventHandler<>() {
             @Override
@@ -52,7 +48,6 @@ public class GameController implements Initializable {
 
                 if (!paused){
                     gameMechanics();
-                    updateGameWindow();
                 }
             }
         }));
@@ -60,9 +55,18 @@ public class GameController implements Initializable {
         runGame.play();
     }
 
+    private void startNewGame() {
+        this.snake = new Snake();
+        createNewFoodToken();
+
+        gameWindow.getChildren().addAll(this.snake.getSnakeShape());
+        gameWindow.getChildren().add(foodToken.getShape());
+
+        paused = !paused;
+    }
+
     // 4. control method
     public void keyboardControl(KeyCode keyCode) {
-        System.out.println(keyCode);
 
         switch (keyCode) {
             case P -> paused = !paused;
@@ -70,6 +74,7 @@ public class GameController implements Initializable {
             case A -> this.snake.setDirection(Direction.LEFT);
             case S -> this.snake.setDirection(Direction.DOWN);
             case D -> this.snake.setDirection(Direction.RIGHT);
+            case N -> startNewGame();
 
             default -> System.out.println("Key not recognized");
         }
@@ -81,11 +86,16 @@ public class GameController implements Initializable {
         // checking for collisions, and updating the game state.
         this.snake.move();
 
-        //this.snake.checkCollisionWithWallsOrItself();
+        if(this.snake.checkCollisionWithWallsOrItself()){
+            gameOver();
+            return; // Exit the method to stop further processing
+        }
 
         if(this.snake.eat(this.foodToken)){
             createNewFoodToken();
         }
+
+        updateGameWindow();
     }
 
     private void updateGameWindow() {
@@ -108,9 +118,8 @@ public class GameController implements Initializable {
         this.foodToken = newFoodToken;
     }
 
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    private void gameOver() {
+        paused = true;
+        gameWindow.getChildren().add(newGameLabel);
     }
-
 }

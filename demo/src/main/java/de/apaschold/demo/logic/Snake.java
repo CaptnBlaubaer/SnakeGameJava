@@ -12,7 +12,8 @@ public class Snake {
 
     //1. attributes
     private ArrayList<SnakeToken> snakeTokens;
-    private Direction direction; // up, down, left, right
+    private Direction direction;
+    private SnakeToken head;// up, down, left, right
 
     //2. constructor
     public Snake() {
@@ -20,8 +21,9 @@ public class Snake {
         this.direction = Direction.getRandomDirection();
 
         this.snakeTokens.add(new SnakeToken());
-        int xCenter = this.snakeTokens.get(0).getXCenter();
-        int yCenter = this.snakeTokens.get(0).getYCenter();
+        this.head = this.snakeTokens.getFirst();
+        int xCenter = this.head.getXCenter();
+        int yCenter = this.head.getYCenter();
 
         this.snakeTokens.add(new SnakeToken(xCenter + 10, yCenter));
         this.snakeTokens.add(new SnakeToken(xCenter + 20, yCenter));
@@ -65,46 +67,38 @@ public class Snake {
         }
 
         //headmovement
-        SnakeToken head = this.snakeTokens.getFirst();
-
-        int newXCenter = head.getXCenter();
-        int newYCenter = head.getYCenter();
+        int newXCenter = this.head.getXCenter();
+        int newYCenter = this.head.getYCenter();
 
         switch (this.direction) {
-            case UP -> head.setYCenter(newYCenter - 10);
-            case DOWN -> head.setYCenter(newYCenter + 10);
-            case LEFT -> head.setXCenter(newXCenter - 10);
-            case RIGHT -> head.setXCenter(newXCenter + 10);
+            case UP -> this.head.setYCenter(newYCenter - 10);
+            case DOWN -> this.head.setYCenter(newYCenter + 10);
+            case LEFT -> this.head.setXCenter(newXCenter - 10);
+            case RIGHT -> this.head.setXCenter(newXCenter + 10);
         }
     }
 
     public boolean eat(FoodToken foodToken){
         boolean hasEaten = false;
 
-        SnakeToken head = this.snakeTokens.getFirst();
-
-        if (head.intersects(foodToken)){
-            this.snakeTokens.add(new SnakeToken(head.getXCenter(), head.getYCenter()));
+        if (this.head.intersects(foodToken)){
+            this.snakeTokens.add(new SnakeToken(this.head.getXCenter(), this.head.getYCenter()));
             hasEaten = true;
         }
 
         return hasEaten;
     }
 
-    public boolean intersects(Token token) {
-        for (SnakeToken snakeToken : this.snakeTokens) {
-            if (snakeToken.intersects(token)) {
-                return true;
+    public boolean checkCollisionWithWallsOrItself() {
+        boolean collision = false;
+
+        for (SnakeToken token : this.snakeTokens) {
+            if (token != this.head && this.head.intersects(token)) {
+                collision = true;
+                break;
             }
         }
-        return false;
+
+        return collision;
     }
-
-    //public boolean checkCollisionWithWallsOrItself() {
-        //SnakeToken head = this.snakeTokens.getFirst();
-        //int xCenter = head.getXCenter();
-        //int yCenter = head.getYCenter();
-
-
-    //}
 }

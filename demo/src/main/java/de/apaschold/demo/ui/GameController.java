@@ -1,10 +1,11 @@
 package de.apaschold.demo.ui;
 
 import de.apaschold.demo.logic.Direction;
-import de.apaschold.demo.logic.fileHandling.CsvHandler;
 import de.apaschold.demo.model.FoodToken;
 import de.apaschold.demo.logic.Snake;
+import de.apaschold.demo.model.ObstacleToken;
 import de.apaschold.demo.model.SnakeToken;
+import de.apaschold.demo.model.Token;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -13,38 +14,35 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable {
 
-    //TODO implement game mechanics, such as collision detection, scoring, and game over conditions reset game.
+    //TODO implement game mechanics, such as collision detection reset game.
     //TODO variable size
     //TODO implement a start screen and a game over screen
-    //TODO starting conditions (not close to the wall,...)
     //TODO snake doesn't cross wall
-    // TODO difficulty
-    //TODO scoring system
+    //TODO difficulty
 
     // 0. constants
-    private static boolean PAUSED = true;
-    private static final double SPEED = 0.1; // Speed of the game in seconds
-
+    private static final double SPEED = 0.1;
+    private static final double DIFFICULTY_MULTIPLIER = 0.5;// Speed of the game in seconds
 
     //1. attributes
     private Snake snake;
     private FoodToken foodToken;
     private double score = 0;
     private int difficulty = 0;
+    private static boolean paused = true;
+    private List<ObstacleToken> obstacles;
 
 
     @FXML
@@ -65,13 +63,14 @@ public class GameController implements Initializable {
     //2. initializer
     @Override
     public void initialize(URL location,ResourceBundle resources) {
+        this.obstacles = new ArrayList<>();
         fillHighscoreList();
 
         Timeline runGame = new Timeline(new KeyFrame(Duration.seconds(SPEED), new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
 
-                if (!PAUSED){
+                if (!paused){
                     gameMechanics();
                 }
             }
@@ -80,32 +79,38 @@ public class GameController implements Initializable {
         runGame.play();
     }
 
-    private void startNewGame() {
-        this.snake = new Snake();
-        createNewFoodToken();
-
-        gameWindow.getChildren().addAll(this.snake.getSnakeShape());
-        gameWindow.getChildren().add(foodToken.getShape());
-
-        PAUSED = !PAUSED;
-    }
-
     // 4. control method
     public void keyboardControl(KeyCode keyCode) {
 
         switch (keyCode) {
-            case P -> PAUSED = !PAUSED;
+            case P -> paused = !paused;
             case W -> this.snake.setDirection(Direction.UP);
             case A -> this.snake.setDirection(Direction.LEFT);
             case S -> this.snake.setDirection(Direction.DOWN);
             case D -> this.snake.setDirection(Direction.RIGHT);
             case PLUS -> changeDifficulty(1);
             case MINUS -> changeDifficulty(-1);
-            case N -> startNewGame();
+            case N -> {if(paused == true) {startNewGame();}}
             case ESCAPE -> Platform.exit();
 
             default -> System.out.println("Key not recognized: " + keyCode);
         }
+    }
+
+
+    private void startNewGame() {
+        this.snake = new Snake();
+
+        this.obstacles.clear();
+        for (int i = 0; i < this.difficulty * 6; i++){
+            obstacles.add(createObstacle());
+        }
+
+        createNewFoodToken();
+
+
+
+        paused = !paused;
     }
 
     //5. game mechanics
@@ -114,14 +119,14 @@ public class GameController implements Initializable {
         // checking for collisions, and updating the game state.
         this.snake.move();
 
-        if(this.snake.checkCollisionWithWallsOrItself()){
+        if(this.snake.checkCollisionWithWallsOrItself(this.obstacles)){
             gameOver();
             return; // Exit the method to stop further processing
         }
 
         if(this.snake.eat(this.foodToken)){
             createNewFoodToken();
-            this.score += 1 + this.difficulty * 0.5;
+            this.score += 1 + this.difficulty * DIFFICULTY_MULTIPLIER; // Increase score based on difficulty
         }
 
         updateGameWindow();
@@ -131,6 +136,10 @@ public class GameController implements Initializable {
         gameWindow.getChildren().clear();
         gameWindow.getChildren().add(this.foodToken.getShape());
         gameWindow.getChildren().addAll(this.snake.getSnakeShape());
+
+        for (ObstacleToken obstacle : this.obstacles) {
+            gameWindow.getChildren().add(obstacle.getShape());
+        }
 
         scoreLabel.setText((int) Math.floor(this.score) + "");
     }
@@ -146,20 +155,42 @@ public class GameController implements Initializable {
             }
         }
 
+        for (ObstacleToken obstacle : this.obstacles) {
+            if (newFoodToken.intersects(obstacle)) {
+                createNewFoodToken();
+                return; // Exit the method to ensure a new food token is created
+            }
+        }
+
         this.foodToken = newFoodToken;
     }
 
-    private void changeDifficulty(int change) {
-        this.difficulty += change;
-        if (this.difficulty < 1) {
-            this.difficulty = 1; // Ensure difficulty does not go below 1
+    private ObstacleToken createObstacle() {
+        ObstacleToken obstacleToken = new ObstacleToken();
+
+        for (SnakeToken snakeToken : this.snake.getSnakeTokens()) {
+            if (obstacleToken.intersects(snakeToken)) {
+                return createObstacle(); // Recursively create a new obstacle if it intersects with the snake
+            }
         }
 
-        difficultyLabel.setText(this.difficulty + "");
+        return obstacleToken;
+    }
+
+    private void changeDifficulty(int change) {
+        if (paused) {
+            this.difficulty += change;
+            if (this.difficulty < 1) {
+                this.difficulty = 1; // Ensure difficulty does not go below 1
+            }
+
+            difficultyLabel.setText(this.difficulty + "");
+        }
+
     }
 
     private void gameOver() {
-        PAUSED = true;
+        paused = true;
 
         gameWindow.getChildren().add(newGameLabel);
 

@@ -1,11 +1,13 @@
 package de.apaschold.demo.logic;
 
 import de.apaschold.demo.model.FoodToken;
+import de.apaschold.demo.model.ObstacleToken;
 import de.apaschold.demo.model.SnakeToken;
 import de.apaschold.demo.model.Token;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Snake {
     //0. constants
@@ -20,13 +22,7 @@ public class Snake {
         this.snakeTokens = new ArrayList<>();
         this.direction = Direction.getRandomDirection();
 
-        this.snakeTokens.add(new SnakeToken());
-        this.head = this.snakeTokens.getFirst();
-        int xCenter = this.head.getXCenter();
-        int yCenter = this.head.getYCenter();
-
-        this.snakeTokens.add(new SnakeToken(xCenter + 10, yCenter));
-        this.snakeTokens.add(new SnakeToken(xCenter + 20, yCenter));
+        createSnake();
     }
 
     //3. getters and setters
@@ -45,10 +41,42 @@ public class Snake {
     }
 
     public void setDirection(Direction newDirection) {
+        // Prevent the snake from reversing direction
+        if (newDirection == Direction.UP && this.direction == Direction.DOWN
+        || newDirection == Direction.DOWN && this.direction == Direction.UP
+        || newDirection == Direction.LEFT && this.direction == Direction.RIGHT
+        || newDirection == Direction.RIGHT && this.direction == Direction.LEFT) {
+            return;
+        }
+
         this.direction = newDirection;
     }
 
     //4. methods
+    private void createSnake() {
+        this.snakeTokens.add(new SnakeToken());
+        this.head = this.snakeTokens.getFirst();
+        int xCenter = this.head.getXCenter();
+        int yCenter = this.head.getYCenter();
+
+        if (xCenter < 55 || yCenter < 55 || xCenter > 345 || yCenter > 345) {
+            this.snakeTokens.clear();
+            createSnake();
+
+            return;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            switch (this.direction) {
+                case UP -> yCenter += 10;
+                case DOWN -> yCenter -= 10;
+                case LEFT -> xCenter += 10;
+                case RIGHT -> xCenter -= 10;
+            }
+            this.snakeTokens.add(new SnakeToken(xCenter, yCenter));
+        }
+    }
+
     /**
      * <h2>move method</h2>
      * <li>Describes the movement of the Snake</li>
@@ -89,11 +117,18 @@ public class Snake {
         return hasEaten;
     }
 
-    public boolean checkCollisionWithWallsOrItself() {
+    public boolean checkCollisionWithWallsOrItself(List<ObstacleToken> obstacles) {
         boolean collision = false;
 
         for (SnakeToken token : this.snakeTokens) {
             if (token != this.head && this.head.intersects(token)) {
+                collision = true;
+                break;
+            }
+        }
+
+        for (Token obstacle : obstacles) {
+            if (this.head.intersects(obstacle)) {
                 collision = true;
                 break;
             }

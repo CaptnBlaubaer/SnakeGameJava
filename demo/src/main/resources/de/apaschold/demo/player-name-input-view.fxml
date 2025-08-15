@@ -9,9 +9,9 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20" />
     </padding>
 
-    <Label text="Enter your name" style="-fx-font-size: 20px; -fx-font-weight: bold" textFill="yellowgreen"/>
+    <Label text="New Highscore - Enter your name" style="-fx-font-size: 20px; -fx-font-weight: bold" textFill="yellowgreen"/>
 
-    <TextField fx:id="playerNameInput" promptText="Player name" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: black; -fx-text-fill: yellowgreen"/>
+    <TextField fx:id="playerNameInput" promptText="Player name" alignment="CENTER" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: black; -fx-text-fill: yellowgreen"/>
 
     <Label fx:id="errorLabel" text="Please enter valid name (contains min. 1 character)" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: red" visible="false"/>
 </VBox>

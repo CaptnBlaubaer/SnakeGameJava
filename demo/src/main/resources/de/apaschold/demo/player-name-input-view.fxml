@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_CENTER" spacing="20" style="-fx-background-color: black" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.apaschold.demo.ui.PlayerNameInputController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20" />
+    </padding>
+
+    <Label text="Enter your name" style="-fx-font-size: 20px; -fx-font-weight: bold" textFill="yellowgreen"/>
+
+    <TextField fx:id="playerNameInput" promptText="Player name" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: black; -fx-text-fill: yellowgreen"/>
+
+    <Label fx:id="errorLabel" text="Please enter valid name (contains min. 1 character)" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: red" visible="false"/>
+</VBox>

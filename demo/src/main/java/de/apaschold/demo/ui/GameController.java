@@ -13,6 +13,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -20,6 +22,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.List;
 
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable {
@@ -35,14 +38,14 @@ public class GameController implements Initializable {
     // 0. constants
     private static boolean PAUSED = true;
     private static final double SPEED = 0.1; // Speed of the game in seconds
-    private static final int LENGTH_HIGHSCORES = 5;
+
 
     //1. attributes
     private Snake snake;
     private FoodToken foodToken;
     private double score = 0;
     private int difficulty = 0;
-    private List<String[]> highscores;
+
 
     @FXML
     private Label newGameLabel;
@@ -62,7 +65,6 @@ public class GameController implements Initializable {
     //2. initializer
     @Override
     public void initialize(URL location,ResourceBundle resources) {
-        this.highscores = CsvHandler.getInstance().readHighscoresFromCsv();
         fillHighscoreList();
 
         Timeline runGame = new Timeline(new KeyFrame(Duration.seconds(SPEED), new EventHandler<>() {
@@ -102,7 +104,7 @@ public class GameController implements Initializable {
             case N -> startNewGame();
             case ESCAPE -> Platform.exit();
 
-            default -> System.out.println("Key not recognized");
+            default -> System.out.println("Key not recognized: " + keyCode);
         }
     }
 
@@ -161,40 +163,28 @@ public class GameController implements Initializable {
 
         gameWindow.getChildren().add(newGameLabel);
 
-        updateHighscore("Player");
-
-        this.score = 0;
+        updateHighscore();
     }
 
     private void fillHighscoreList() {
         String highscoreList = "";
 
-        for (String[] entry : this.highscores) {
+        for (String[] entry : GuiController.getInstance().getHighscores()) {
             highscoreList += entry[0] + ": " + entry[1] + "\n";
         }
         highscoreLabel.setText(highscoreList);
     }
 
-    private void updateHighscore(String playerName){
-        if (this.score > 0) {
+    private void updateHighscore(){
+        List <String[]> highscores = GuiController.getInstance().getHighscores();
 
-            if(this.score < Integer.parseInt(this.highscores.getLast()[1]) && this.highscores.size() < LENGTH_HIGHSCORES) {
-                this.highscores.add(new String[]{playerName, String.valueOf((int) Math.floor(this.score))});
-            } else {
-                for (int i = 0; i <= this.highscores.size(); i++) {
-                    if (this.score > Integer.parseInt(this.highscores.get(i)[1])) {
-                        this.highscores.add(i, new String[]{playerName, String.valueOf((int) Math.floor(this.score))});
-                        if (this.highscores.size() > LENGTH_HIGHSCORES) {
-                            this.highscores.remove(LENGTH_HIGHSCORES); // Keep only the top 10 scores
-                        }
-                        break;
-                    }
+        if (this.score > 0) {
+            for (int i = 0; i < highscores.size(); i++) {
+                if (this.score > Integer.parseInt(highscores.get(i)[1])) {
+                    GuiController.getInstance().setNewHighscore((int) Math.floor(this.score));
+                    GuiController.getInstance().loadPlayerNameInputView();
                 }
             }
-
-            CsvHandler.getInstance().writeHighscoreToCsv(this.highscores);
-
-            fillHighscoreList();
         }
     }
 }

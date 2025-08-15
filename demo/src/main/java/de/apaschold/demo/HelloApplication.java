@@ -10,8 +10,8 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        GuiController guiController = new GuiController(stage);
-        guiController.startGame();
+        GuiController.getInstance().setMainStage(stage);
+        GuiController.getInstance().loadGameView();
     }
 
     public static void main(String[] args) {

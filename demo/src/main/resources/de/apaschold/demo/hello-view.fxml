@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="0" style="-fx-background-color: black" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.apaschold.demo.ui.GameController">
+<VBox alignment="TOP_CENTER" spacing="20" style="-fx-background-color: black" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.apaschold.demo.ui.GameController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="0" />
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20" />
     </padding>
 
     <Pane maxHeight="200.0" prefHeight="100.0" prefWidth="400">
@@ -29,7 +29,37 @@
         </children>
     </Pane>
 
-    <HBox>
+    <HBox spacing="20">
+        <children>
+            <GridPane vgap="2">
+                <children>
+                    <Label text="Controls" GridPane.columnSpan="5" GridPane.columnIndex="0" GridPane.rowIndex="0" textFill="yellowgreen" style="-fx-font-size: 16px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+
+                    <Label text="W" GridPane.columnIndex="2" GridPane.rowIndex="3" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+                    <Label text="  A  " GridPane.columnIndex="1" GridPane.rowIndex="4" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+                    <Label text="S" GridPane.columnIndex="2" GridPane.rowIndex="4" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+                    <Label text="  D  " GridPane.columnIndex="3" GridPane.rowIndex="4" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+
+                    <Label text="UP" GridPane.columnIndex="2" GridPane.rowIndex="2" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+                    <Label text="DOWN" GridPane.columnIndex="2" GridPane.rowIndex="5" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+                    <Label text="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="4" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+                    <Label text="RIGHT" GridPane.columnIndex="4" GridPane.rowIndex="4" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+
+                    <Label text="P  Pause/Unpause" GridPane.columnSpan="5" GridPane.columnIndex="0" GridPane.rowIndex="7" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+                    <Label text="N  New game" GridPane.columnSpan="5" GridPane.columnIndex="0" GridPane.rowIndex="8" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+                    <Label text="+/-  Change difficulty" GridPane.columnSpan="5" GridPane.columnIndex="0" GridPane.rowIndex="9" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+                    <Label text="ESC  Exit" GridPane.columnSpan="5" GridPane.columnIndex="0" GridPane.rowIndex="10" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
+                </children>
+            </GridPane>
+
+            <VBox alignment="TOP_CENTER">
+                <Label text="Score" style="-fx-font-size: 20px; -fx-font-weight: bold" textFill="yellowgreen"/>
+                <Label fx:id="scoreLabel" text="0" style="-fx-font-size: 16px; -fx-font-weight: bold" textFill="yellowgreen"/>
+
+                <Label text="Difficulty" style="-fx-font-size: 20px; -fx-font-weight: bold" textFill="yellowgreen"/>
+                <Label fx:id="difficultyLabel" text="1" style="-fx-font-size: 16px; -fx-font-weight: bold" textFill="yellowgreen"/>
+            </VBox>
+        </children>
     </HBox>
 
 

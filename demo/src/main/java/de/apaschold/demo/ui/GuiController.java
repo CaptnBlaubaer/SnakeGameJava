@@ -10,7 +10,7 @@ import java.io.IOException;
 public class GuiController {
     public static GameController gameController;
 
-    private Stage stage;
+    private final Stage stage;
 
     public GuiController(Stage stage){
         this.stage = stage;
@@ -19,9 +19,9 @@ public class GuiController {
     public void startGame() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
 
-        Scene scene = new Scene(fxmlLoader.load(), 500, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 500, 750);
 
-        gameController = (GameController) fxmlLoader.getController();
+        gameController = fxmlLoader.getController();
 
         scene.setOnKeyPressed(event -> {
             gameController.keyboardControl(event.getCode());

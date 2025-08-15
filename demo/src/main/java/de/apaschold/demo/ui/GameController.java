@@ -6,6 +6,7 @@ import de.apaschold.demo.logic.Snake;
 import de.apaschold.demo.model.SnakeToken;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,6 +25,8 @@ public class GameController implements Initializable {
     //TODO implement a start screen and a game over screen
     //TODO starting conditions (not close to the wall,...)
     //TODO snake doesn't cross wall
+    // TODO difficulty
+    //TODO scoring system
 
     // 0. constants
     private static boolean paused = true;
@@ -31,12 +34,20 @@ public class GameController implements Initializable {
     //1. attributes
     private Snake snake;
     private FoodToken foodToken;
+    private int score = 0;
+    private int difficulty = 1;
 
     @FXML
     private Label newGameLabel;
 
     @FXML
     private Pane gameWindow;
+
+    @FXML
+    private Label scoreLabel;
+
+    @FXML
+    private Label difficultyLabel;
 
     //2. initializer
     @Override
@@ -74,7 +85,10 @@ public class GameController implements Initializable {
             case A -> this.snake.setDirection(Direction.LEFT);
             case S -> this.snake.setDirection(Direction.DOWN);
             case D -> this.snake.setDirection(Direction.RIGHT);
+            case PLUS -> changeDifficulty(1);
+            case MINUS -> changeDifficulty(-1);
             case N -> startNewGame();
+            case ESCAPE -> Platform.exit();
 
             default -> System.out.println("Key not recognized");
         }
@@ -93,6 +107,7 @@ public class GameController implements Initializable {
 
         if(this.snake.eat(this.foodToken)){
             createNewFoodToken();
+            this.score += 1 + this.difficulty * 0.5;
         }
 
         updateGameWindow();
@@ -102,6 +117,8 @@ public class GameController implements Initializable {
         gameWindow.getChildren().clear();
         gameWindow.getChildren().add(this.foodToken.getShape());
         gameWindow.getChildren().addAll(this.snake.getSnakeShape());
+
+        scoreLabel.setText(this.score + "");
     }
 
     private void createNewFoodToken(){
@@ -116,6 +133,15 @@ public class GameController implements Initializable {
         }
 
         this.foodToken = newFoodToken;
+    }
+
+    private void changeDifficulty(int change) {
+        this.difficulty += change;
+        if (this.difficulty < 1) {
+            this.difficulty = 1; // Ensure difficulty does not go below 1
+        }
+
+        difficultyLabel.setText(this.difficulty + "");
     }
 
     private void gameOver() {

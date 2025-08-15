@@ -23,13 +23,13 @@
       </children>
     </Pane>
 
-    <Pane fx:id="gameWindow" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" style="-fx-border-color: blue">
+    <Pane fx:id="gameWindow" maxHeight="405.0" maxWidth="400.0" prefHeight="405.0" prefWidth="400.0" style="-fx-border-color: blue">
         <children>
             <Label fx:id="newGameLabel" layoutX="70.0" layoutY="188.0" text="To start new game press N" style="-fx-font-size: 24px" textFill="RED"/>
         </children>
     </Pane>
 
-    <HBox spacing="20">
+    <HBox spacing="30" alignment="CENTER">
         <children>
             <GridPane vgap="2">
                 <children>
@@ -57,7 +57,12 @@
                 <Label fx:id="scoreLabel" text="0" style="-fx-font-size: 16px; -fx-font-weight: bold" textFill="yellowgreen"/>
 
                 <Label text="Difficulty" style="-fx-font-size: 20px; -fx-font-weight: bold" textFill="yellowgreen"/>
-                <Label fx:id="difficultyLabel" text="1" style="-fx-font-size: 16px; -fx-font-weight: bold" textFill="yellowgreen"/>
+                <Label fx:id="difficultyLabel" text="0" style="-fx-font-size: 16px; -fx-font-weight: bold" textFill="yellowgreen"/>
+            </VBox>
+
+            <VBox prefWidth="150" alignment="TOP_CENTER">
+                <Label text="Highscore" style="-fx-font-size: 20px; -fx-font-weight: bold" textFill="yellowgreen"/>
+                <Label fx:id="highscoreLabel" style="-fx-font-size: 16px; -fx-font-weight: bold" textFill="yellowgreen"/>
             </VBox>
         </children>
     </HBox>

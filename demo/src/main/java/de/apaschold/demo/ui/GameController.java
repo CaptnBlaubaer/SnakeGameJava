@@ -1,6 +1,7 @@
 package de.apaschold.demo.ui;
 
 import de.apaschold.demo.logic.Direction;
+import de.apaschold.demo.logic.fileHandling.CsvHandler;
 import de.apaschold.demo.model.FoodToken;
 import de.apaschold.demo.logic.Snake;
 import de.apaschold.demo.model.SnakeToken;
@@ -17,9 +18,12 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.List;
+
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable {
+
     //TODO implement game mechanics, such as collision detection, scoring, and game over conditions reset game.
     //TODO variable size
     //TODO implement a start screen and a game over screen
@@ -29,13 +33,16 @@ public class GameController implements Initializable {
     //TODO scoring system
 
     // 0. constants
-    private static boolean paused = true;
+    private static boolean PAUSED = true;
+    private static final double SPEED = 0.1; // Speed of the game in seconds
+    private static final int LENGTH_HIGHSCORES = 5;
 
     //1. attributes
     private Snake snake;
     private FoodToken foodToken;
-    private int score = 0;
-    private int difficulty = 1;
+    private double score = 0;
+    private int difficulty = 0;
+    private List<String[]> highscores;
 
     @FXML
     private Label newGameLabel;
@@ -49,15 +56,20 @@ public class GameController implements Initializable {
     @FXML
     private Label difficultyLabel;
 
+    @FXML
+    private Label highscoreLabel;
+
     //2. initializer
     @Override
     public void initialize(URL location,ResourceBundle resources) {
+        this.highscores = CsvHandler.getInstance().readHighscoresFromCsv();
+        fillHighscoreList();
 
-        Timeline runGame = new Timeline(new KeyFrame(Duration.seconds(0.2), new EventHandler<>() {
+        Timeline runGame = new Timeline(new KeyFrame(Duration.seconds(SPEED), new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
 
-                if (!paused){
+                if (!PAUSED){
                     gameMechanics();
                 }
             }
@@ -73,14 +85,14 @@ public class GameController implements Initializable {
         gameWindow.getChildren().addAll(this.snake.getSnakeShape());
         gameWindow.getChildren().add(foodToken.getShape());
 
-        paused = !paused;
+        PAUSED = !PAUSED;
     }
 
     // 4. control method
     public void keyboardControl(KeyCode keyCode) {
 
         switch (keyCode) {
-            case P -> paused = !paused;
+            case P -> PAUSED = !PAUSED;
             case W -> this.snake.setDirection(Direction.UP);
             case A -> this.snake.setDirection(Direction.LEFT);
             case S -> this.snake.setDirection(Direction.DOWN);
@@ -118,7 +130,7 @@ public class GameController implements Initializable {
         gameWindow.getChildren().add(this.foodToken.getShape());
         gameWindow.getChildren().addAll(this.snake.getSnakeShape());
 
-        scoreLabel.setText(this.score + "");
+        scoreLabel.setText((int) Math.floor(this.score) + "");
     }
 
     private void createNewFoodToken(){
@@ -145,7 +157,44 @@ public class GameController implements Initializable {
     }
 
     private void gameOver() {
-        paused = true;
+        PAUSED = true;
+
         gameWindow.getChildren().add(newGameLabel);
+
+        updateHighscore("Player");
+
+        this.score = 0;
+    }
+
+    private void fillHighscoreList() {
+        String highscoreList = "";
+
+        for (String[] entry : this.highscores) {
+            highscoreList += entry[0] + ": " + entry[1] + "\n";
+        }
+        highscoreLabel.setText(highscoreList);
+    }
+
+    private void updateHighscore(String playerName){
+        if (this.score > 0) {
+
+            if(this.score < Integer.parseInt(this.highscores.getLast()[1]) && this.highscores.size() < LENGTH_HIGHSCORES) {
+                this.highscores.add(new String[]{playerName, String.valueOf((int) Math.floor(this.score))});
+            } else {
+                for (int i = 0; i <= this.highscores.size(); i++) {
+                    if (this.score > Integer.parseInt(this.highscores.get(i)[1])) {
+                        this.highscores.add(i, new String[]{playerName, String.valueOf((int) Math.floor(this.score))});
+                        if (this.highscores.size() > LENGTH_HIGHSCORES) {
+                            this.highscores.remove(LENGTH_HIGHSCORES); // Keep only the top 10 scores
+                        }
+                        break;
+                    }
+                }
+            }
+
+            CsvHandler.getInstance().writeHighscoreToCsv(this.highscores);
+
+            fillHighscoreList();
+        }
     }
 }

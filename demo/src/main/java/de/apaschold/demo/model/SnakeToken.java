@@ -3,14 +3,21 @@ package de.apaschold.demo.model;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * <h2>SnakeToken class</h2>
+ * <li>Represents a segment of the snake's body in the game</li>
+ * <li>Extends the {@link Token} class and includes a rectangular shape for rendering</li>
+ * <li>Compared to other {@link Token} possesses setters to change position</li>
+ */
+
 public class SnakeToken extends Token {
 
     //0.constants
-    private static final int width = 8;
-    private static final int height = 8;
+    private static final double width = 8;
+    private static final double height = 8;
 
     //1. attributes
-    private Rectangle shape;
+    private final Rectangle shape;
 
     //2. constructors
     public SnakeToken() {

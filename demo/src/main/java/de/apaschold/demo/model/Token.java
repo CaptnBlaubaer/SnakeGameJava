@@ -2,6 +2,12 @@ package de.apaschold.demo.model;
 
 import java.util.Random;
 
+/**
+ * <h2>Token class</h2>
+ * <li>Abstract base class for all tokens in the game ({@link SnakeToken}, {@link FoodToken}, {@link ObstacleToken})</li>
+ * <li>Contains common attributes and methods for position and intersection detection</li>
+ * <li>Provides constructors for random and specified positions</li>
+ */
 public abstract class Token {
     //0. constants
 
@@ -31,11 +37,18 @@ public abstract class Token {
     }
 
     //4. methods
+    /**
+     * <h2>intersects method</h2>
+     * <li>Checks if this token intersects with another token or the game border</li>
+     * <li>Used for collision detection in the game</li>
+     * @param other The other token to check intersection with
+     * @return true if the tokens intersect or if this token is at the border, false otherwise
+     */
     public boolean intersects(Token other){
         boolean isIntersecting = false;
 
         if (this.xCenter == other.xCenter && this.yCenter == other.yCenter) {
-            isIntersecting = true;
+            isIntersecting = true; // Tokens intersect with other token
         }
 
         if (this.xCenter == -5 || this.yCenter == -5 || this.xCenter == 405 || this.yCenter == 405) {
@@ -43,7 +56,7 @@ public abstract class Token {
         }
 
         return isIntersecting;
-    };
+    }
 
     @Override
     public String toString() {

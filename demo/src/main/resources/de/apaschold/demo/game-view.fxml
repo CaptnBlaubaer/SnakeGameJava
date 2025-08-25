@@ -10,7 +10,6 @@
     </padding>
 
     <Pane maxHeight="200.0" prefHeight="100.0" prefWidth="400">
-      <children>
          <Label layoutX="30" layoutY="5.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="S" textFill="#ff00f6" />
          <Label layoutX="65.0" layoutY="20.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="N" textFill="#2f00ff" />
           <Label layoutX="110.0" layoutY="5.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="A" textFill="#00e5ff" />
@@ -20,19 +19,14 @@
           <Label layoutX="310.0" layoutY="5.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="A" textFill="#ff7b00" />
           <Label layoutX="350.0" layoutY="20.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="M" textFill="RED" />
           <Label layoutX="390.0" layoutY="5.0" style="-fx-font-weight: bold; -fx-font-style: italic; -fx-font-family: 'Courier New'; -fx-font-size: 60px;" text="E" textFill="#ff0099" />
-      </children>
     </Pane>
 
-    <Pane fx:id="gameWindow" maxHeight="405.0" maxWidth="400.0" prefHeight="405.0" prefWidth="400.0" style="-fx-border-color: blue">
-        <children>
+    <Pane fx:id="gameWindow" maxHeight="410.0" maxWidth="400.0" prefHeight="410.0" prefWidth="400.0" style="-fx-border-color: blue">
             <Label fx:id="newGameLabel" layoutX="70.0" layoutY="188.0" text="To start new game press N" style="-fx-font-size: 24px" textFill="RED"/>
-        </children>
     </Pane>
 
     <HBox spacing="30" alignment="CENTER">
-        <children>
             <GridPane vgap="2">
-                <children>
                     <Label text="Controls" GridPane.columnSpan="5" GridPane.columnIndex="0" GridPane.rowIndex="0" textFill="yellowgreen" style="-fx-font-size: 16px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
 
                     <Label text="W" GridPane.columnIndex="2" GridPane.rowIndex="3" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
@@ -49,7 +43,6 @@
                     <Label text="N  New game" GridPane.columnSpan="5" GridPane.columnIndex="0" GridPane.rowIndex="8" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
                     <Label text="+/-  Change difficulty" GridPane.columnSpan="5" GridPane.columnIndex="0" GridPane.rowIndex="9" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
                     <Label text="ESC  Exit" GridPane.columnSpan="5" GridPane.columnIndex="0" GridPane.rowIndex="10" textFill="yellowgreen" style="-fx-font-size: 12px; -fx-font-weight: bold" GridPane.halignment="CENTER"/>
-                </children>
             </GridPane>
 
             <VBox alignment="TOP_CENTER">
@@ -64,7 +57,6 @@
                 <Label text="Highscore" style="-fx-font-size: 20px; -fx-font-weight: bold" textFill="yellowgreen"/>
                 <Label fx:id="highscoreLabel" style="-fx-font-size: 16px; -fx-font-weight: bold" textFill="yellowgreen"/>
             </VBox>
-        </children>
     </HBox>
 
 

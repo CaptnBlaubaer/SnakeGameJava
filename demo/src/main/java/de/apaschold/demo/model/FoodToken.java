@@ -3,12 +3,17 @@ package de.apaschold.demo.model;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+/**
+ * <h2>FoodToken class</h2>
+ * <li>Represents a food item in the game that the snake can consume</li>
+ * <li>Extends the {@link Token} class and includes a circular shape for rendering</li>
+ */
 public class FoodToken extends Token {
     //0. constants
     private static final int radius = 4;
 
     //1. attributes
-    private Circle shape;
+    private final Circle shape;
 
     //2. constructors
     public FoodToken() {

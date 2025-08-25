@@ -5,6 +5,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <h2>CsvHandler class</h2>
+ * <li>Singleton class for handling CSV file operations</li>
+ * <li>Provides methods to read and write highscore data to a CSV file</li>
+ */
 public class CsvHandler {
     //0. constants
     private final static String CSV_SEPARATOR = ";";
@@ -26,6 +31,12 @@ public class CsvHandler {
     }
 
     //3. read'n'write methods
+    /**
+     * <h2>writeHighscoreToCsv method</h2>
+     * <li>Writes a list of highscores to a CSV file</li>
+     * <li>Each entry in the list is an array with two elements: name and score</li>
+     * @param highscores List of String arrays containing name and score
+     */
     public void writeHighscoreToCsv(List<String[]> highscores){
 
         try (FileWriter writer = new FileWriter(FILE_PATH, StandardCharsets.UTF_8)) {
@@ -39,6 +50,12 @@ public class CsvHandler {
         }
     }
 
+    /**
+     * <h2>readHighscoresFromCsv method</h2>
+     * <li>Reads highscores from a CSV file and returns them as a list</li>
+     * <li>Each entry in the list is an array with two elements: name and score</li>
+     * @return List of String arrays containing name and score
+     */
     public List<String[]> readHighscoresFromCsv() {
         List<String[]> highscores = new ArrayList<>();
 
